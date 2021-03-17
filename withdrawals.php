@@ -5,8 +5,8 @@
 		<div class="card">
 			<div class="card-header">
 				<large class="card-title">
-					<b>Payment List</b>
-					<button class="btn btn-primary btn-sm btn-block col-md-2 float-right" type="button" id="new_payments"><i class="fa fa-plus"></i> New Payment</button>
+					<b>Withdrawals Ledger</b>
+					<button class="btn btn-primary btn-sm btn-block col-md-2 float-right" type="button" id="new_payments"><i class="fa fa-plus"></i> New Withdrawal </button>
 				</large>
 				
 			</div>

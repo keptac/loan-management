@@ -178,9 +178,9 @@ Class Action {
 		$data .= ", contact_no = '$contact_no' ";
 		$data .= ", email = '$email' ";
 		$data .= ", tax_id = '$tax_id' ";
-		
+
 		if(empty($id)){
-			$save = $this->db->query("INSERT INTO members set ".$data);
+			$save = $this->db->query("INSERT INTO members VALUES ".$data);
 		}else{
 			$save = $this->db->query("UPDATE members set ".$data." where id=".$id);
 		}
@@ -259,6 +259,7 @@ Class Action {
 			return 1;
 	}
 
+	// Loan repayment
 	function save_payment(){
 		extract($_POST);
 			$data = " loan_id = $loan_id ";
@@ -266,16 +267,50 @@ Class Action {
 			$data .= " , amount = '$amount' ";
 			$data .= " , penalty_amount = '$penalty_amount' ";
 			$data .= " , overdue = '$overdue' ";
-		if(empty($id)){
+
+			$ledgerRecord = " trans_reference = LMS".mt_rand(1,99999999);
+			$ledgerRecord .= " , paychain_id = '$loan_id'";
+			$ledgerRecord .= " , amount = $amount ";
+			$ledgerRecord .= " , currency = '$currency' "; 
+			$ledgerRecord .= " , inputter = 'capture_user_session' "; //Revisit this break point
+			$ledgerRecord .= " , payee = '$payee' ";
+			$ledgerRecord .= " , payment_narration = 'LOAN REPAYMENT'"; //LOAN REPAYMENT, LOAN PENALTY, CONTRIBUTION, WITHDRAWAl
+			$ledgerRecord .= " , mode_of_payment = '$mode_of_payment' ";
+
 			$save = $this->db->query("INSERT INTO payments set ".$data);
-		}else{
-			$save = $this->db->query("UPDATE payments set ".$data." where id = ".$id);
+			if($save){
+				if($this->updateLedger($ledgerRecord)){
+					$save2 = $this->db->query("UPDATE `loan_list` SET `balance`=balance-".$amount." WHERE `id`= ".$id);
 
-		}
-		if($save)
+					//CAPTURE REPAYMENT
+					if($overdue){
+						$ledgerRecord = " trans_reference = LMSP".mt_rand(1,99999999);
+						$ledgerRecord .= " , paychain_id = '$loan_id'";
+						$ledgerRecord .= " , amount = $penalty_amount ";
+						$ledgerRecord .= " , currency = '$currency' "; 
+						$ledgerRecord .= " , inputter = 'capture_user_session' "; //Revisit this break point
+						$ledgerRecord .= " , payee = '$payee' ";
+						$ledgerRecord .= " , payment_narration = 'LOAN PENALTY'";
+						$ledgerRecord .= " , mode_of_payment = '$mode_of_payment' ";
+						$this->updateLedger($ledgerRecord);
+					}
+				}
+			}
+
+		if($save2){
 			return 1;
-
+		}
 	}
+
+	function updateLedger($data){
+		$save = $this->db->query("INSERT INTO ledger set ".$data);
+		if($save){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+
 	function delete_payment(){
 		extract($_POST);
 		$delete = $this->db->query("DELETE FROM payments where id = ".$id);
@@ -310,6 +345,8 @@ Class Action {
 					}
 				}
 				$data .= " , ref_no = '$ref_no' ";
+
+				var_dump($data);
 				$save = $this->db->query("INSERT INTO contribution_list set ".$data);
 			}else{
 				$save = $this->db->query("UPDATE contribution_list set ".$data." where id=".$id);
@@ -327,32 +364,28 @@ Class Action {
 	}
 
 	//Project
-function save_project(){
-	extract($_POST);
-	$data = " project_name = '$project_name' ";
-	$data .= " , description = '$description' ";
-	$data .= " , start_date = '$start_date' ";
-	$data .= " , end_date = '$end_date' ";
-	$data .= " , status = 1";
+	function save_project(){
+		extract($_POST);
+		$data = " project_name = '$project_name' ";
+		$data .= " , description = '$description' ";
+		$data .= " , start_date = '$start_date' ";
+		$data .= " , end_date = '$end_date' ";
+		$data .= " , status = 1";
 
-	if(empty($id)){
-		$save = $this->db->query("INSERT INTO projects set ".$data);
-	}else{
-		$save = $this->db->query("UPDATE projects set ".$data." where id=".$id);
+		if(empty($id)){
+			$save = $this->db->query("INSERT INTO projects set ".$data);
+		}else{
+			$save = $this->db->query("UPDATE projects set ".$data." where id=".$id);
+		}
+		if($save)
+			return 1;
 	}
-	if($save)
-		return 1;
-else return 1
-}
 
-function delete_project(){
-	extract($_POST);
-	$delete = $this->db->query("DELETE FROM projects where id = ".$id);
-	if($delete)
-		return 1;
-}
-
-	
-
+	function delete_project(){
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM projects where id = ".$id);
+		if($delete)
+			return 1;
+	}
 }
 
