@@ -52,7 +52,7 @@ if(isset($_GET['id'])){
 				</div>
 				<div class="col-md-5">
 					<div class="">
-						<label for="">Tax ID</label>
+						<label for="">ID Number</label>
 						<input type="text" class="form-control" name="tax_id" value="<?php echo isset($tax_id) ? $tax_id : '' ?>">
 					</div>
 				</div>

@@ -9,7 +9,7 @@ foreach($qry->fetch_array() as $k => $v){
 ?>
 <div class="container-fluid">
 	<div class="col-lg-12">
-	<form action="" id="add-contribution">
+	<form action="POST" id="add-contribution">
 		<input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
 		<div class="row">
 			<div class="col-md-6">
@@ -36,7 +36,7 @@ foreach($qry->fetch_array() as $k => $v){
 						<?php endwhile; ?>
 				</select>
 			</div>
-			
+		
 		</div>
 
 		<div class="row">
