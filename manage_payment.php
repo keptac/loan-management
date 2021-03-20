@@ -2,7 +2,7 @@
 <?php 
 
 if(isset($_GET['id'])){
-	$qry = $conn->query("SELECT * FROM payments where id=".$_GET['id']);
+	$qry = $conn->query("SELECT * FROM loan_repayments where id=".$_GET['id']);
 	foreach($qry->fetch_array() as $k => $val){
 		$$k = $val;
 	}
@@ -19,8 +19,8 @@ if(isset($_GET['id'])){
 						<label for="" class="control-label">Reference No.</label>
 						<select name="loan_id" id="" class="custom-select browser-default select2">
 							<option value=""></option>
-							<?php 
-							$loan = $conn->query("SELECT * from loan_list where status =2 ");
+							<?php
+							$loan = $conn->query("SELECT * from loan_list where status = 2 ");
 							while($row=$loan->fetch_assoc()):
 							?>
 							<option value="<?php echo $row['id'] ?>" <?php echo isset($loan_id) && $loan_id == $row['id'] ? "selected" : '' ?>><?php echo $row['ref_no'] ?></option>
@@ -48,11 +48,13 @@ if(isset($_GET['id'])){
 
 	function load_fields(){
 		start_load()
+		
 		$.ajax({
 			url:'load_fields.php',
 			method:"POST",
 			data:{id:'<?php echo isset($id) ? $id : "" ?>',loan_id:$('[name="loan_id"]').val()},
 			success:function(resp){
+				alert_toast("Payment successfully deleted",'success')
 				if(resp){
 					$('#fields').html(resp)
 					end_load()

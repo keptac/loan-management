@@ -150,6 +150,12 @@ foreach($qry->fetch_array() as $k => $v){
 					setTimeout(function(){
 						location.reload();
 					},1500)
+				}else{
+					$('.modal').modal('hide')
+					alert_toast(resp,"success")
+					setTimeout(function(){
+						location.reload();
+					},5500)
 				}
 			}
 		})

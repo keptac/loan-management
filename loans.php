@@ -46,7 +46,7 @@
 							while($row = $qry->fetch_assoc()):
 								$monthly = ($row['amount'] + ($row['amount'] * ($plan_arr[$row['plan_id']]['interest_percentage']/100))) / $plan_arr[$row['plan_id']]['months'];
 								$penalty = $monthly * ($plan_arr[$row['plan_id']]['penalty_rate']/100);
-								$payments = $conn->query("SELECT * from payments where loan_id =".$row['id']);
+								$payments = $conn->query("SELECT * from loan_repayments where loan_id =".$row['id']);
 								$paid = $payments->num_rows;
 								$offset = $paid > 0 ? " offset $paid ": "";
 								if($row['status'] == 2):
@@ -59,7 +59,6 @@
 
 						 ?>
 						 <tr>
-						 	
 						 	<td class="text-center"><?php echo $i++ ?></td>
 						 	<td>
 						 		<p>Name :<b><?php echo $row['name'] ?></b></p>
@@ -70,10 +69,16 @@
 						 		<p>Reference :<b><?php echo $row['ref_no'] ?></b></p>
 						 		<p><small>Loan type :<b><?php echo $type_arr[$row['loan_type_id']] ?></small></b></p>
 						 		<p><small>Plan :<b><?php echo $plan_arr[$row['plan_id']]['plan'] ?></small></b></p>
-						 		<p><small>Amount :<b><?php echo $row['amount'] ?></small></b></p>
+
+								<p><small>Duration : <b><?php echo $row['duration']." months" ?></small></b></p>
+								<p><small>Rate : <b><?php echo $row['rate']."%" ?></small></b></p>
+								<p><small>Interest : <b><?php echo number_format($row['interest'],2) ?></small></b></p>
+
+						 		<p><small>Amount : <b><?php echo number_format($row['amount'],2) ?></small></b></p>
 						 		<p><small>Total Payable Amount :<b><?php echo number_format($monthly * $plan_arr[$row['plan_id']]['months'],2) ?></small></b></p>
 						 		<p><small>Monthly Payable Amount: <b><?php echo number_format($monthly,2) ?></small></b></p>
 						 		<p><small>Overdue Payable Amount: <b><?php echo number_format($penalty,2) ?></small></b></p>
+
 						 		<?php if($row['status'] == 2 || $row['status'] == 3): ?>
 						 		<p><small>Date Released: <b><?php echo date("M d, Y",strtotime($row['date_released'])) ?></small></b></p>
 						 		<?php endif; ?>

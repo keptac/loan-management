@@ -35,7 +35,7 @@
 							
 							$i=1;
 							
-							$qry = $conn->query("SELECT p.*,l.ref_no,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address from payments p inner join loan_list l on l.id = p.loan_id inner join members b on b.id = l.borrower_id  order by p.id asc");
+							$qry = $conn->query("SELECT p.*,l.ref_no,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address from loan_repayments p inner join loan_list l on l.id = p.loan_id inner join members b on b.id = l.borrower_id  order by p.id asc");
 							while($row = $qry->fetch_assoc()):
 								
 

@@ -11,7 +11,7 @@
 
 				<a class="list-header" style="color: white;">Loans</a>
 				<a href="index.php?page=loans" class="nav-item nav-loans"><span class='icon-field'><i class="fa fa-hand-holding-usd"></i></span> View Loans</a>
-				<a href="index.php?page=payments" class="nav-item nav-payments"><span class='icon-field'><i class="fa fa-money-bill"></i></span> Repayments</a>
+				<a href="index.php?page=repayments" class="nav-item nav-repayments"><span class='icon-field'><i class="fa fa-money-bill"></i></span> Repayments</a>
 				<a href="index.php?page=plan" class="nav-item nav-plan"><span class='icon-field'><i class="fa fa-list-alt"></i></span> Loan Plans</a>	
 				<a href="index.php?page=loan_type" class="nav-item nav-loan_type"><span class='icon-field'><i class="fa fa-th-list"></i></span> Loan Types</a>	
 

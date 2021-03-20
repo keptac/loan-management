@@ -180,7 +180,7 @@ Class Action {
 		$data .= ", tax_id = '$tax_id' ";
 
 		if(empty($id)){
-			$save = $this->db->query("INSERT INTO members VALUES ".$data);
+			$save = $this->db->query("INSERT INTO members set ".$data);
 		}else{
 			$save = $this->db->query("UPDATE members set ".$data." where id=".$id);
 		}
@@ -197,11 +197,25 @@ Class Action {
 
 	function save_loan(){
 		extract($_POST);
-			$data = " borrower_id = $borrower_id ";
-			$data .= " , loan_type_id = '$loan_type_id' ";
-			$data .= " , plan_id = '$plan_id' ";
-			$data .= " , amount = '$amount' ";
-			$data .= " , purpose = '$purpose' ";
+		$data = " borrower_id = $borrower_id ";
+		$data .= " , loan_type_id = $loan_type_id ";
+		$data .= " , plan_id = $plan_id ";
+		$data .= " , amount = $amount ";
+		$data .= " , purpose = '$purpose' ";
+
+		$loans = $this->db->query("SELECT * FROM loan_plan where id = $plan_id ");
+
+		while($l = $loans->fetch_assoc()){
+			$rate = $l['interest_percentage'];
+			$interest = $amount * ($l['interest_percentage']/100) * ($l['months']/12);
+			$duration = $l['months'];
+
+			$data .= " , rate = $rate ";
+			$data .= " , interest = $interest ";
+			$data .= " , duration = $duration ";
+		}
+
+			
 			if(isset($status)){
 				$data .= " , status = '$status' ";
 				if($status == 2){
@@ -230,26 +244,39 @@ Class Action {
 
 				}
 			}
+
 			if(empty($id)){
-				$ref_no = mt_rand(1,99999999);
+				$ref_no = "L".mt_rand(1,999999);
 				$i= 1;
 
 				while($i== 1){
-					$check = $this->db->query("SELECT * FROM loan_list where ref_no ='$ref_no' ")->num_rows;
+					$check = $this->db->query("SELECT * FROM loan_list where ref_no = '$ref_no' ")->num_rows;
 					if($check > 0){
-					$ref_no = mt_rand(1,99999999);
+						$ref_no = "L".mt_rand(1,999999);
 					}else{
 						$i = 0;
 					}
 				}
+
 				$data .= " , ref_no = '$ref_no' ";
 			}
-			if(empty($id))
-			$save = $this->db->query("INSERT INTO loan_list set ".$data);
-			else
-			$save = $this->db->query("UPDATE loan_list set ".$data." where id=".$id);
-		if($save)
-			return 1;
+
+			if(empty($id)){
+				$save = $this->db->query("INSERT INTO loan_list set ".$data);
+				if($save){
+					return 1;
+				}else{
+					return $data;
+				}
+				
+			}else{
+				$save = $this->db->query("UPDATE loan_list set ".$data." where id=".$id);
+				if($save){
+					return 1;
+				}else{
+					return $data;
+				}
+			}
 	}
 
 	function delete_loan(){
@@ -261,43 +288,57 @@ Class Action {
 
 	// Loan repayment
 	function save_payment(){
+
 		extract($_POST);
-			$data = " loan_id = $loan_id ";
-			$data .= " , payee = '$payee' ";
-			$data .= " , amount = '$amount' ";
-			$data .= " , penalty_amount = '$penalty_amount' ";
-			$data .= " , overdue = '$overdue' ";
 
-			$ledgerRecord = " trans_reference = LMS".mt_rand(1,99999999);
-			$ledgerRecord .= " , paychain_id = '$loan_id'";
-			$ledgerRecord .= " , amount = $amount ";
-			$ledgerRecord .= " , currency = '$currency' "; 
-			$ledgerRecord .= " , inputter = 'capture_user_session' "; //Revisit this break point
-			$ledgerRecord .= " , payee = '$payee' ";
-			$ledgerRecord .= " , payment_narration = 'LOAN REPAYMENT'"; //LOAN REPAYMENT, LOAN PENALTY, CONTRIBUTION, WITHDRAWAl
-			$ledgerRecord .= " , mode_of_payment = '$mode_of_payment' ";
+		// Pass Currency
+		// Pass MODE of payment
 
-			$save = $this->db->query("INSERT INTO payments set ".$data);
-			if($save){
-				if($this->updateLedger($ledgerRecord)){
-					$save2 = $this->db->query("UPDATE `loan_list` SET `balance`=balance-".$amount." WHERE `id`= ".$id);
+		$inputter = $_SESSION['login_name'];
+		$data = " loan_id = $loan_id ";
+		$data .= " , payee = '$payee' ";
+		$data .= " , amount = $amount ";
+		$data .= " , penalty_amount = $penalty_amount ";
+		$data .= " , overdue = '$overdue' ";
+		$data .= " , inputter = '$inputter' ";
+		$data .= " , currency_code = 'USD' ";
 
-					//CAPTURE REPAYMENT
-					if($overdue){
-						$ledgerRecord = " trans_reference = LMSP".mt_rand(1,99999999);
-						$ledgerRecord .= " , paychain_id = '$loan_id'";
-						$ledgerRecord .= " , amount = $penalty_amount ";
-						$ledgerRecord .= " , currency = '$currency' "; 
-						$ledgerRecord .= " , inputter = 'capture_user_session' "; //Revisit this break point
-						$ledgerRecord .= " , payee = '$payee' ";
-						$ledgerRecord .= " , payment_narration = 'LOAN PENALTY'";
-						$ledgerRecord .= " , mode_of_payment = '$mode_of_payment' ";
-						$this->updateLedger($ledgerRecord);
-					}
+		$save = $this->db->query("INSERT INTO loan_repayments set ".$data);
+
+		$ledgerRecord = " trans_reference = LMS".mt_rand(1,99999999);
+		$ledgerRecord .= " , paychain_id = $loan_id ";
+		$ledgerRecord .= " , amount = $amount ";
+		$ledgerRecord .= " , currency = '$currency' "; 
+		$ledgerRecord .= " , inputter = '$inputter' "; //Revisit this break point
+		$ledgerRecord .= " , payee = '$payee' ";
+		$ledgerRecord .= " , payment_narration = 'LOAN REPAYMENT'"; //LOAN REPAYMENT, LOAN PENALTY, CONTRIBUTION, WITHDRAWAl
+		$ledgerRecord .= " , mode_of_payment = 'CASH' ";
+
+		if($save){
+			if($this->updateLedger($ledgerRecord)){
+				// $save2 = $this->db->query("UPDATE `loan_list` SET `balance`=balance-".$amount." WHERE `id`= ".$id);
+
+				$success = true;
+				//CAPTURE REPAYMENT ONTO PAYMENTS
+
+				if($overdue){
+					$ledgerRecord = " trans_reference = LMSP".mt_rand(1,99999999);
+					$ledgerRecord .= " , paychain_id = '$loan_id'";
+					$ledgerRecord .= " , amount = $penalty_amount ";
+					$ledgerRecord .= " , currency = 'USD' "; 
+					$ledgerRecord .= " , inputter = 'capture_user_session' "; //Revisit this break point
+					$ledgerRecord .= " , payee = '$payee' ";
+					$ledgerRecord .= " , payment_narration = 'LOAN PENALTY'";
+					$ledgerRecord .= " , mode_of_payment = '$mode_of_payment' ";
+					$this->updateLedger($ledgerRecord);
 				}
+				
+			}else{
+				$success=false;
 			}
+		}
 
-		if($save2){
+		if($success){
 			return 1;
 		}
 	}
@@ -313,7 +354,7 @@ Class Action {
 
 	function delete_payment(){
 		extract($_POST);
-		$delete = $this->db->query("DELETE FROM payments where id = ".$id);
+		$delete = $this->db->query("DELETE FROM loan_repayments where id = ".$id);
 		if($delete)
 			return 1;
 	}

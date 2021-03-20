@@ -2,7 +2,7 @@
 <?php 
 extract($_POST);
 if(isset($id)){
-	$qry = $conn->query("SELECT * FROM payments where id=".$id);
+	$qry = $conn->query("SELECT * FROM loan_repayments where id=".$id);
 	foreach($qry->fetch_array() as $k => $val){
 		$$k = $val;
 	}
@@ -16,7 +16,7 @@ $type_arr = $conn->query("SELECT * FROM loan_types where id = '".$meta['loan_typ
 $plan_arr = $conn->query("SELECT *,concat(months,' month/s [ ',interest_percentage,'%, ',penalty_rate,' ]') as plan FROM loan_plan where id  = '".$meta['plan_id']."' ")->fetch_array();
 $monthly = ($meta['amount'] + ($meta['amount'] * ($plan_arr['interest_percentage']/100))) / $plan_arr['months'];
 $penalty = $monthly * ($plan_arr['penalty_rate']/100);
-$payments = $conn->query("SELECT * from payments where loan_id =".$loan_id);
+$payments = $conn->query("SELECT * from loan_repayments where loan_id =".$loan_id);
 $paid = $payments->num_rows;
 $offset = $paid > 0 ? " offset $paid ": "";
 	$next = $conn->query("SELECT * FROM loan_schedules where loan_id = '".$loan_id."'  order by date(date_due) asc limit 1 $offset ")->fetch_assoc()['date_due'];
