@@ -24,7 +24,7 @@
 
 				<?php if($_SESSION['login_type'] == 1): ?>
 				<a class="list-header" style="color: white;">Administrator</a>
-				
+			
 				<a href="index.php?page=users" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-users"></i></span> Users</a>
 				<a href="index.php?page=reports" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-users"></i></span> Reports</a>
 				

@@ -196,6 +196,8 @@ Class Action {
 
 
 	function save_loan(){
+		$inputter = $_SESSION['login_name'];
+		
 		extract($_POST);
 		$data = " borrower_id = $borrower_id ";
 		$data .= " , loan_type_id = $loan_type_id ";
@@ -215,7 +217,7 @@ Class Action {
 			$data .= " , duration = $duration ";
 		}
 
-			
+		
 			if(isset($status)){
 				$data .= " , status = '$status' ";
 				if($status == 2){
@@ -239,7 +241,7 @@ Class Action {
 				}else{
 					$chk = $this->db->query("SELECT * FROM loan_schedules where loan_id = $id")->num_rows;
 					if($chk > 0){
-						$thi->db->query("DELETE FROM loan_schedules where loan_id = $id ");
+						$this->db->query("DELETE FROM loan_schedules where loan_id = $id ");
 					}
 
 				}
@@ -271,8 +273,27 @@ Class Action {
 				
 			}else{
 				$save = $this->db->query("UPDATE loan_list set ".$data." where id=".$id);
+
 				if($save){
-					return 1;
+					if($status==2){
+						$ledgerRecord = " trans_reference = 'LDM".mt_rand(1,999999)."'";
+						$ledgerRecord .= " , paychain_id = '$ref_no' ";
+						$ledgerRecord .= " , amount = ($amount * -1) ";
+						$ledgerRecord .= " , inputter = '$inputter' "; 
+						$ledgerRecord .= " , payee = '$borrower_id' ";
+						$ledgerRecord .= " , currency = 'USD' "; 
+						$ledgerRecord .= " , payment_narration = 'LOAN DISBURMENT'";
+						$ledgerRecord .= " , mode_of_payment = 'CASH' ";
+		
+							if($this->updateLedger($ledgerRecord)){
+								return 1;
+							}else{
+								return false;
+							}
+					}else{
+						return 1;
+					}
+					
 				}else{
 					return $data;
 				}
