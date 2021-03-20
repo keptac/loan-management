@@ -305,31 +305,28 @@ Class Action {
 
 		$save = $this->db->query("INSERT INTO loan_repayments set ".$data);
 
-		$ledgerRecord = " trans_reference = LMS".mt_rand(1,99999999);
-		$ledgerRecord .= " , paychain_id = $loan_id ";
+		$ledgerRecord = " trans_reference = 'LMS".mt_rand(1,999999)."'";
+		$ledgerRecord .= " , paychain_id = '$loan_id' ";
 		$ledgerRecord .= " , amount = $amount ";
-		$ledgerRecord .= " , currency = '$currency' "; 
 		$ledgerRecord .= " , inputter = '$inputter' "; //Revisit this break point
 		$ledgerRecord .= " , payee = '$payee' ";
+		$ledgerRecord .= " , currency = 'USD' "; 
 		$ledgerRecord .= " , payment_narration = 'LOAN REPAYMENT'"; //LOAN REPAYMENT, LOAN PENALTY, CONTRIBUTION, WITHDRAWAl
 		$ledgerRecord .= " , mode_of_payment = 'CASH' ";
 
 		if($save){
 			if($this->updateLedger($ledgerRecord)){
 				// $save2 = $this->db->query("UPDATE `loan_list` SET `balance`=balance-".$amount." WHERE `id`= ".$id);
-
 				$success = true;
-				//CAPTURE REPAYMENT ONTO PAYMENTS
-
 				if($overdue){
-					$ledgerRecord = " trans_reference = LMSP".mt_rand(1,99999999);
+					$ledgerRecord = " trans_reference = 'LMSP".mt_rand(1,999999)."'";
 					$ledgerRecord .= " , paychain_id = '$loan_id'";
 					$ledgerRecord .= " , amount = $penalty_amount ";
-					$ledgerRecord .= " , currency = 'USD' "; 
-					$ledgerRecord .= " , inputter = 'capture_user_session' "; //Revisit this break point
+					$ledgerRecord .= " , inputter = '$inputter' "; 
 					$ledgerRecord .= " , payee = '$payee' ";
+					$ledgerRecord .= " , currency = 'USD' "; 
 					$ledgerRecord .= " , payment_narration = 'LOAN PENALTY'";
-					$ledgerRecord .= " , mode_of_payment = '$mode_of_payment' ";
+					$ledgerRecord .= " , mode_of_payment = 'CASH' ";
 					$this->updateLedger($ledgerRecord);
 				}
 				
@@ -363,38 +360,63 @@ Class Action {
 
 //Contributions
 	function save_contribution(){
+		//Pass Currency
+
+		$inputter = $_SESSION['login_name'];
+
 		extract($_POST);
 			$data = " contributor_id = $contributor_id ";
-			$data .= " , project_id = '$project_id' ";
-
-			$data .= " , amount = '$amount' ";
+			$data .= " , project_id = $project_id ";
+			$data .= " , amount = $amount ";
 			$data .= " , narration = '$narration' ";
-			if(isset($status)){
-				$data .= " , status = '$status' ";
-			}
+			$data .= " , inputter = '$inputter' ";
+			$data .= " , currency_code = 'USD' ";
+
 			if(empty($id)){
-				$ref_no = mt_rand(1,99999999);
+				$ref_no = "C".mt_rand(1,999999);
 				$i= 1;
 
 				while($i== 1){
 					$check = $this->db->query("SELECT * FROM contribution_list where ref_no ='$ref_no' ")->num_rows;
 					if($check > 0){
-					$ref_no = mt_rand(1,99999999);
-					var_dump($ref_no);
+						$ref_no = "C".mt_rand(1,999999);
 					}else{
 						$i = 0;
 					}
 				}
+
 				$data .= " , ref_no = '$ref_no' ";
 
-				var_dump($data);
 				$save = $this->db->query("INSERT INTO contribution_list set ".$data);
+
+				$ledgerRecord = " trans_reference = 'CMS".mt_rand(1,999999)."'";
+				$ledgerRecord .= " , paychain_id = '$ref_no' ";
+				$ledgerRecord .= " , amount = $amount ";
+				$ledgerRecord .= " , inputter = '$inputter' "; 
+				$ledgerRecord .= " , payee = '$contributor_id' ";
+				$ledgerRecord .= " , currency = 'USD' "; 
+				$ledgerRecord .= " , payment_narration = 'CONTRIBUTION'";
+				$ledgerRecord .= " , mode_of_payment = 'CASH' ";
+
+				if($save){
+					if($this->updateLedger($ledgerRecord)){
+						$success = true;
+					}else{
+						$delete = $this->db->query("DELETE FROM contribution_list where ref_no = ".$ref_no);
+						$success = false;
+					}
+				}
+
 			}else{
 				$save = $this->db->query("UPDATE contribution_list set ".$data." where id=".$id);
 			}
-				
-		if($save)
-			return 1;
+					
+			if($success)
+				return 1;
+			else{
+				return $ledgerRecord;
+			}	
+
 	}
 
 	function delete_contribution(){

@@ -49,7 +49,7 @@ foreach($qry->fetch_array() as $k => $v){
 		<div class="row">
 			<div class="form-group col-md-12">
 			<label class="control-label">Comment</label>
-			<textarea name="description" id="" cols="30" rows="2" class="form-control"><?php echo isset($narration) ? $narration : '' ?></textarea>
+			<textarea name="narration" id="" cols="30" rows="2" class="form-control"><?php echo isset($narration) ? $narration : '' ?></textarea>
 		</div>
 
 		</div>
@@ -61,15 +61,11 @@ foreach($qry->fetch_array() as $k => $v){
 				<select class="custom-select browser-default" name="status">
 					<option value="0" <?php echo $status == 0 ? "selected" : '' ?>>For Approval</option>
 					<option value="1" <?php echo $status == 1 ? "selected" : '' ?>>Approved</option>
-					<?php if($status !='4' ): ?>
-					<option value="2" <?php echo $status == 2 ? "selected" : '' ?>>Released</option>
-					<?php endif ?>
-					<?php if($status =='2' ): ?>
-					<option value="3" <?php echo $status == 3 ? "selected" : '' ?>>Complete</option>
-					<?php endif ?>
+
 					<?php if($status !='2' ): ?>
-					<option value="4" <?php echo $status == 4 ? "selected" : '' ?>>Denied</option>
+						<option value="4" <?php echo $status == 4 ? "selected" : '' ?>>Denied</option>
 					<?php endif ?>
+
 				</select>
 			</div>
 		</div>
@@ -111,6 +107,8 @@ foreach($qry->fetch_array() as $k => $v){
 					setTimeout(function(){
 						location.reload();
 					},1500)
+				}else{
+					alert_toast(resp,"error")
 				}
 			}
 		})
