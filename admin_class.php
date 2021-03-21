@@ -197,7 +197,7 @@ Class Action {
 
 	function save_loan(){
 		$inputter = $_SESSION['login_name'];
-		
+
 		extract($_POST);
 		$data = " borrower_id = $borrower_id ";
 		$data .= " , loan_type_id = $loan_type_id ";
@@ -366,7 +366,7 @@ Class Action {
 		if($save){
 			return 1;
 		}else{
-			return 0;
+			return $save;
 		}
 	}
 
@@ -470,6 +470,31 @@ Class Action {
 		$delete = $this->db->query("DELETE FROM projects where id = ".$id);
 		if($delete)
 			return 1;
+	}
+
+	//Withdrawals
+	function make_withdrawal(){
+		$inputter = $_SESSION['login_name'];
+		extract($_POST);
+
+		$ledgerRecord = " trans_reference = 'CWP".mt_rand(1,999999)."'";
+		$ledgerRecord .= " , paychain_id = '$project_id' ";
+		$ledgerRecord .= " , amount = ($amount * -1) ";
+		$ledgerRecord .= " , inputter = '$inputter' "; 
+		$ledgerRecord .= " , payee = '$customer_id' ";
+		$ledgerRecord .= " , currency = 'USD' "; 
+		$ledgerRecord .= " , payment_narration = 'WITHDRAWAL'";
+		$ledgerRecord .= " , mode_of_payment = 'CASH' ";
+
+		return $ledgerRecord;
+		
+		$response = $this->updateLedger($ledgerRecord);
+
+		if($response){
+			return 1;
+		}else{
+			return $response;
+		}
 	}
 }
 

@@ -146,7 +146,7 @@
 		uni_modal("New Loan Application","manage_loan.php",'mid-large')
 	})
 	$('.edit_loan').click(function(){
-		uni_modal("Edit Loan","manage_loan.php?id="+$(this).attr('data-id'),'mid-large')
+		uni_modal("Edit Loan","edit_loan.php?id="+$(this).attr('data-id'),'mid-large')
 	})
 	$('.delete_loan').click(function(){
 		_conf("Are you sure to delete this data?","delete_loan",[$(this).attr('data-id')])

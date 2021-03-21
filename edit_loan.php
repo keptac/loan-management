@@ -13,14 +13,24 @@ foreach($qry->fetch_array() as $k => $v){
 	<form action="" id="loan-application">
 		<input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
 
+		<?php
+			$ref = $conn->query("SELECT * FROM loan_list where id = ".$_GET['id']);
+		?>
 
+		<?php while($row = $ref->fetch_assoc()): ?>
+			<input type="hidden" name="ref_no" value="<?php echo isset($row['ref_no']) ? $row['ref_no'] : 'nothing' ?>">			
+		<?php endwhile; ?>
+		
+		
+
+		<div class="hide-values">
 		<div class="row">
 			<div class="col-md-6">
 				<label class="control-label">Borrower</label>
 				<?php
 				$borrower = $conn->query("SELECT *,concat(lastname,', ',firstname,' ',middlename) as name FROM members order by concat(lastname,', ',firstname,' ',middlename) asc ");
 				?>
-				<select  name="borrower_id" id="borrower_id" class="custom-select browser-default form-control ">
+				<select name="borrower_id" id="borrower_id" class="custom-select browser-default form-control ">
 					<option value=""></option>
 						<?php while($row = $borrower->fetch_assoc()): ?>
 							<option value="<?php echo $row['id'] ?>" <?php echo isset($borrower_id) && $borrower_id == $row['id'] ? "selected" : '' ?>><?php echo $row['name'] . ' |ID No:'.$row['tax_id'] ?></option>
@@ -50,7 +60,66 @@ foreach($qry->fetch_array() as $k => $v){
 				<?php
 				$plan = $conn->query("SELECT * FROM loan_plan order by `months` desc ");
 				?>
-				<select name="plan_id" id="plan_id" class="custom-select browser-default">
+				<select  name="plan_id" id="plan_id" class="custom-select browser-default">
+					<option value=""></option>
+						<?php while($row = $plan->fetch_assoc()): ?>
+							<option value="<?php echo $row['id'] ?>" <?php echo isset($plan_id) && $plan_id == $row['id'] ? "selected" : '' ?> data-months="<?php echo $row['months'] ?>" data-interest_percentage="<?php echo $row['interest_percentage'] ?>" data-penalty_rate="<?php echo $row['penalty_rate'] ?>"><?php echo $row['months'] . ' month(s) to pay at '.$row['interest_percentage'].'% interest.' ?></option>
+						<?php endwhile; ?>
+				</select>
+			
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="form-group col-md-6">
+			<label class="control-label">Purpose</label>
+			<textarea name="purpose" id="" cols="30" rows="2" class="form-control"><?php echo isset($purpose) ? $purpose : '' ?></textarea>
+		</div>
+
+		</div>
+</div>
+
+
+
+
+
+		<div class="row">
+			<div class="col-md-6">
+				<label class="control-label">Borrower</label>
+				<?php
+				$borrower = $conn->query("SELECT *,concat(lastname,', ',firstname,' ',middlename) as name FROM members order by concat(lastname,', ',firstname,' ',middlename) asc ");
+				?>
+				<select disabled name="borrower_id" id="borrower_id" class="custom-select browser-default form-control ">
+					<option value=""></option>
+						<?php while($row = $borrower->fetch_assoc()): ?>
+							<option value="<?php echo $row['id'] ?>" <?php echo isset($borrower_id) && $borrower_id == $row['id'] ? "selected" : '' ?>><?php echo $row['name'] . ' |ID No:'.$row['tax_id'] ?></option>
+						<?php endwhile; ?>
+				</select>
+			</div>
+			<div class="col-md-6">
+				<label class="control-label">Loan Type</label>
+				<?php
+				$type = $conn->query("SELECT * FROM loan_types order by `type_name` desc ");
+				?>
+				<select disabled name="loan_type_id" id="loan_type_id" class="custom-select browser-default  form-control ">
+					<option value=""></option>
+						<?php while($row = $type->fetch_assoc()): ?>
+							<option value="<?php echo $row['id'] ?>" <?php echo isset($loan_type_id) && $loan_type_id == $row['id'] ? "selected" : '' ?>><?php echo $row['type_name'] ?></option>
+						<?php endwhile; ?>
+				</select>
+			</div>
+			
+		</div>
+
+		<br/>
+		
+		<div class="row">
+			<div class="col-md-6">
+				<label class="control-label">Loan Plan</label>
+				<?php
+				$plan = $conn->query("SELECT * FROM loan_plan order by `months` desc ");
+				?>
+				<select disabled name="plan_id" id="plan_id" class="custom-select browser-default">
 					<option value=""></option>
 						<?php while($row = $plan->fetch_assoc()): ?>
 							<option value="<?php echo $row['id'] ?>" <?php echo isset($plan_id) && $plan_id == $row['id'] ? "selected" : '' ?> data-months="<?php echo $row['months'] ?>" data-interest_percentage="<?php echo $row['interest_percentage'] ?>" data-penalty_rate="<?php echo $row['penalty_rate'] ?>"><?php echo $row['months'] . ' month(s) to pay at '.$row['interest_percentage'].'% interest.' ?></option>
@@ -66,7 +135,7 @@ foreach($qry->fetch_array() as $k => $v){
 		<div class="row">
 			<div class="form-group col-md-6">
 			<label class="control-label">Purpose</label>
-			<textarea name="purpose" id="" cols="30" rows="2" class="form-control"><?php echo isset($purpose) ? $purpose : '' ?></textarea>
+			<textarea disabled name="purpose" id="" cols="30" rows="2" class="form-control"><?php echo isset($purpose) ? $purpose : '' ?></textarea>
 		</div>
 		
 		<div class="form-group col-md-2 offset-md-2 .justify-content-center">
