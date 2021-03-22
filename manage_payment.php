@@ -48,7 +48,6 @@ if(isset($_GET['id'])){
 
 	function load_fields(){
 		start_load()
-		
 		$.ajax({
 			url:'load_fields.php',
 			method:"POST",

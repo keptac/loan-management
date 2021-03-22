@@ -35,33 +35,22 @@ foreach($qry->fetch_array() as $k => $v){
 						<?php endwhile; ?>
 				</select>
 			</div>
-		
+		</div>
+	
+		<br/>
+
+		<div id="balance_fields">
+				
 		</div>
 
+		<!-- <hr/>
 		<div class="row">
 			<div class="form-group col-md-6">
 				<label class="control-label">Amount</label>
-				<input type="number" name="amount" class="form-control text-right" step="any" id="" value="<?php echo isset($amount) ? $amount : '' ?>">
+				<input type="number" name="amount" class="form-control text-right" step="any" id="" value="<?php //echo isset($amount) ? $amount : '' ?>">
 			</div>
 		</div>
 
-		<?php if(isset($status)): ?>
-		<div class="row">
-			<div class="form-group col-md-6">
-				<label class="control-label">&nbsp;</label>
-				<select class="custom-select browser-default" name="status">
-					<option value="0" <?php echo $status == 0 ? "selected" : '' ?>>For Approval</option>
-					<option value="1" <?php echo $status == 1 ? "selected" : '' ?>>Approved</option>
-
-					<?php if($status !='2' ): ?>
-						<option value="4" <?php echo $status == 4 ? "selected" : '' ?>>Denied</option>
-					<?php endif ?>
-
-				</select>
-			</div>
-		</div>
-		<hr>
-	<?php endif ?>
 		<div id="row-field">
 			<div class="row ">
 				<div class="col-md-12 text-center">
@@ -69,17 +58,36 @@ foreach($qry->fetch_array() as $k => $v){
 					<button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		
 	</form>
 	</div>
 </div>
 <script>
+	$('[name="project_id"]').change(function(){
+		load_fields()
+	})
+
 	$('.select2').select2({
 		placeholder:"Please select here",
 		width:"100%"
 	})
 
+	function load_fields(){
+		start_load()
+		
+		$.ajax({
+			url:'load_balance.php',
+			method:"POST",
+			data:{customer_id:$('[name="customer_id"]').val(), project_id:$('[name="project_id"]').val()},
+			success:function(resp){
+				if(resp){
+					$('#balance_fields').html(resp)
+					end_load()
+				}
+			}
+		})
+	}
 
 	$('#add-withdrawal').submit(function(e){
 		e.preventDefault()

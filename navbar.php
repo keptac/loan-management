@@ -16,7 +16,6 @@
 				<a href="index.php?page=plan" class="nav-item nav-plan"><span class='icon-field'><i class="fa fa-list-alt"></i></span> Loan Plans</a>	
 				<a href="index.php?page=loan_type" class="nav-item nav-loan_type"><span class='icon-field'><i class="fa fa-th-list"></i></span> Loan Types</a>	
 
-			
 				<a class="list-header" style="color: white;">Projects</a>
 				<a href="index.php?page=contributions" class="nav-item nav-contributions"><span class='icon-field'><i class="fa fa-wallet"></i></span> View Contributions</a>
 				<a href="index.php?page=projects" class="nav-item nav-projects"><span class='icon-field'><i class="fa fa-briefcase"></i></span> Projects</a>
@@ -24,10 +23,10 @@
 
 				<?php if($_SESSION['login_type'] == 1): ?>
 				<a class="list-header" style="color: white;">Administrator</a>
-			
+
 				<a href="index.php?page=users" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-users"></i></span> Users</a>
 				<a href="index.php?page=reports" class="nav-item nav-users"><span class='icon-field'><i class="fa fa-users"></i></span> Reports</a>
-				
+
 			<?php endif; ?>
 		</div>
 
