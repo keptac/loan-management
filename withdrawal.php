@@ -60,11 +60,13 @@
 
 								 <?php if($row['status']==0):?>
 									<p><small>
+
+
+									<!-- Only admins -->
 									<select name="withdrawal_approve" id="" class="custom-select browser-default">
-									
 										<option value="" <?php echo $status == "" ? "selected" : '' ?>></option>
-										<option value="1" <?php echo $status == 1 ? "selected" : '' ?>>Approve</option>
-										<option value="2" <?php echo $status == 2 ? "selected" : '' ?>>Decline</option>
+										<option value=<?php echo "1,".$row["trans_reference"] ?> <?php echo $status == 1 ? "selected" : '' ?>>Approve</option>
+										<option value=value=<?php echo "2,".$row["trans_reference"] ?>  <?php echo $status == 2 ? "selected" : '' ?>>Decline</option>
 									</select>
 									</small></p>
 								<?php endif ?>
@@ -107,7 +109,7 @@
 		$.ajax({
 			url:'ajax.php?action=update_withdrawal',
 			method:"POST",
-			data:{withdrawal_approve:$('[name="withdrawal_approve"]').val()},
+			data:{withdrawal_approve:$('[name="withdrawal_approve"]').val(), },
 			success:function(resp){
 				if(resp){
 					end_load()

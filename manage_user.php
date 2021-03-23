@@ -27,8 +27,10 @@ foreach($user->fetch_array() as $k =>$v){
 			<label for="type">User Type</label>
 			<select name="type" id="type" class="custom-select">
 				<option value="1" <?php echo isset($meta['type']) && $meta['type'] == 1 ? 'selected': '' ?>>Admin</option>
-				<option value="2" <?php echo isset($meta['type']) && $meta['type'] == 2 ? 'selected': '' ?>>Staff</option>
-			</select>
+				<option value="2" <?php echo isset($meta['type']) && $meta['type'] == 2 ? 'selected': '' ?>>Projects</option>
+				<option value="3" <?php echo isset($meta['type']) && $meta['type'] == 3 ? 'selected': '' ?>>Loans</option>
+
+		</select>
 		</div>
 	</form>
 </div>
@@ -46,6 +48,8 @@ foreach($user->fetch_array() as $k =>$v){
 					setTimeout(function(){
 						location.reload()
 					},1500)
+				}else{
+					alert_toast(resp,'success')
 				}
 			}
 		})

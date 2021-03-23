@@ -131,4 +131,11 @@ if($action == "make_withdrawal"){
 		echo $save;
 }
 
+// Withdrawal
+if($action == "authorize_withdrawal"){
+	$save = $crud->authorize_withdrawal();
+	if($save)
+		echo $save;
+}
+
 

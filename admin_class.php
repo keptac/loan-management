@@ -69,6 +69,8 @@ Class Action {
 		}
 		if($save){
 			return 1;
+		}else{
+			return $data;
 		}
 	}
 	function signup(){
@@ -487,13 +489,30 @@ Class Action {
 		$ledgerRecord .= " , currency = 'USD' "; 
 		$ledgerRecord .= " , payment_narration = 'WITHDRAWAL'";
 		$ledgerRecord .= " , mode_of_payment = 'CASH' ";
-		$ledgerRecord .= " , status = 1 ";
+		$ledgerRecord .= " , status = 0 ";
 
 		$save = $this->db->query("INSERT INTO ledger set ".$ledgerRecord);
 		if($save){
 			return 1;
 		}else{
 			return $ledgerRecord;
+		}
+	}
+
+	function authorize_withdrawal(){
+		$inputter = $_SESSION['login_name'];
+		extract($_POST);
+
+		$dataArr = str_split("\,", $withdrawal_approve); 
+
+		$data .= " , status =  $dataArr[0]";
+		$data .= " , inputter = '$inputter' "; 
+
+		$save = $this->db->query("UPDATE `ledger` SET ".$data." WHERE trans_reference = ".$dataArr[1]);
+		if($save){
+			return 1;
+		}else{
+			return $data;
 		}
 	}
 }

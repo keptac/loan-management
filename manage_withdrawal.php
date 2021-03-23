@@ -42,23 +42,6 @@ if(isset($_GET['id'])){
 		<div id="balance_fields">
 
 		</div>
-
-		<!-- <hr/>
-		<div class="row">
-			<div class="form-group col-md-6">
-				<label class="control-label">Amount</label>
-				<input type="number" name="amount" class="form-control text-right" step="any" id="" value="<?php //echo isset($amount) ? $amount : '' ?>">
-			</div>
-		</div>
-
-		<div id="row-field">
-			<div class="row ">
-				<div class="col-md-12 text-center">
-					<button class="btn btn-primary btn-sm " >Save</button>
-					<button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
-				</div>
-			</div>
-		</div> -->
 		
 	</form>
 	</div>
