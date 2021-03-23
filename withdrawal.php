@@ -20,6 +20,7 @@
 							<th class="text-center">Reference</th>
 							<th class="text-center">Amount</th>
 							<th class="text-center">Issued by</th>
+							<th class="text-center">Action</th>
 							<th class="text-center">Date</th>
 						</tr>
 					</thead>
@@ -46,11 +47,27 @@
 						 	</td>
 
 							 <td>
-						 		<p><small><b><?php echo number_format($row['amount'],2) ?></b></small></p>
-						 	</td>
+								<p><small><b><?php echo number_format($row['amount'],2) ?></b></small></p>
+							</td>
 							 
 							 <td>
 						 		<p><small><b><?php echo $row['inputter'] ?></b></small></p>
+						 	</td>
+
+							 <td>
+						 		<p><small><b><?php if($row['status']==1)echo "SUCCESSFUL"?></b></small></p>
+								 <p><small><b><?php if($row['status']==2)echo "DECLINED"?></b></small></p>
+
+								 <?php if($row['status']==0):?>
+									<p><small>
+									<select name="withdrawal_approve" id="" class="custom-select browser-default">
+									
+										<option value="" <?php echo $status == "" ? "selected" : '' ?>></option>
+										<option value="1" <?php echo $status == 1 ? "selected" : '' ?>>Approve</option>
+										<option value="2" <?php echo $status == 2 ? "selected" : '' ?>>Decline</option>
+									</select>
+									</small></p>
+								<?php endif ?>
 						 	</td>
 							<td>
 						 		<p><small><b><?php echo date("M d, Y",strtotime($row['date_released'])) ?></small></b></p>
@@ -79,6 +96,26 @@
 	}
 </style>	
 <script>
+		
+	$('[name="withdrawal_approve"]').change(function(){
+		update_status()
+	})
+
+	function update_status(){
+		start_load()
+		
+		$.ajax({
+			url:'ajax.php?action=update_withdrawal',
+			method:"POST",
+			data:{withdrawal_approve:$('[name="withdrawal_approve"]').val()},
+			success:function(resp){
+				if(resp){
+					end_load()
+				}
+			}
+		})
+	}
+
 	$('#withdrawal-pool').dataTable()
 	$('#funds_withdrawal').click(function(){
 		uni_modal("Funds Withdrawal","manage_withdrawal.php",'mid-large')

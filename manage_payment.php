@@ -53,7 +53,6 @@ if(isset($_GET['id'])){
 			method:"POST",
 			data:{id:'<?php echo isset($id) ? $id : "" ?>',loan_id:$('[name="loan_id"]').val()},
 			success:function(resp){
-				alert_toast("Payment successfully deleted",'success')
 				if(resp){
 					$('#fields').html(resp)
 					end_load()
@@ -74,7 +73,9 @@ if(isset($_GET['id'])){
 	 				setTimeout(function(e){
 	 					location.reload()
 	 				},1500)
-	 			}
+	 			}else{
+					alert_toast(resp,"success");
+				 }
 	 		}
 	 	})
 	 })

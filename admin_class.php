@@ -284,11 +284,10 @@ Class Action {
 						$ledgerRecord .= " , currency = 'USD' "; 
 						$ledgerRecord .= " , payment_narration = 'LOAN DISBURMENT'";
 						$ledgerRecord .= " , mode_of_payment = 'CASH' ";
+						$ledgerRecord .= " , status = 1 ";
 		
 							if($this->updateLedger($ledgerRecord)){
 								return 1;
-							}else{
-								return false;
 							}
 					}else{
 						return 1;
@@ -324,39 +323,38 @@ Class Action {
 		$data .= " , inputter = '$inputter' ";
 		$data .= " , currency_code = 'USD' ";
 
-		$save = $this->db->query("INSERT INTO loan_repayments set ".$data);
-
 		$ledgerRecord = " trans_reference = 'LMS".mt_rand(1,999999)."'";
 		$ledgerRecord .= " , paychain_id = '$loan_id' ";
 		$ledgerRecord .= " , amount = $amount ";
 		$ledgerRecord .= " , inputter = '$inputter' "; //Revisit this break point
-		$ledgerRecord .= " , payee = '$payee' ";
+		$ledgerRecord .= " , payee = '$payee_id' ";
 		$ledgerRecord .= " , currency = 'USD' "; 
 		$ledgerRecord .= " , payment_narration = 'LOAN REPAYMENT'"; //LOAN REPAYMENT, LOAN PENALTY, CONTRIBUTION, WITHDRAWAl
 		$ledgerRecord .= " , mode_of_payment = 'CASH' ";
+		$ledgerRecord .= " , status = 1 ";
+		
+
+		$save = $this->db->query("INSERT INTO loan_repayments set ".$data);
 
 		if($save){
-			if($this->updateLedger($ledgerRecord)){
-				// $save2 = $this->db->query("UPDATE `loan_list` SET `balance`=balance-".$amount." WHERE `id`= ".$id);
-				$success = true;
-				if($overdue){
-					$ledgerRecord = " trans_reference = 'LMSP".mt_rand(1,999999)."'";
-					$ledgerRecord .= " , paychain_id = '$loan_id'";
-					$ledgerRecord .= " , amount = $penalty_amount ";
-					$ledgerRecord .= " , inputter = '$inputter' "; 
-					$ledgerRecord .= " , payee = '$payee' ";
-					$ledgerRecord .= " , currency = 'USD' "; 
-					$ledgerRecord .= " , payment_narration = 'LOAN PENALTY'";
-					$ledgerRecord .= " , mode_of_payment = 'CASH' ";
-					$this->updateLedger($ledgerRecord);
+			$save2 = $this->db->query("INSERT INTO ledger set ".$ledgerRecord);
+			if($save2){
+				if($overdue==1){
+					$ledgerRecordPenalty = " trans_reference = 'LMSP".mt_rand(1,999999)."'";
+					$ledgerRecordPenalty .= " , paychain_id = '$loan_id'";
+					$ledgerRecordPenalty .= " , amount = $penalty_amount ";
+					$ledgerRecordPenalty .= " , inputter = '$inputter' "; 
+					$ledgerRecordPenalty .= " , payee = $payee_id ";
+					$ledgerRecordPenalty .= " , currency = 'USD' "; 
+					$ledgerRecordPenalty .= " , payment_narration = 'LOAN PENALTY'";
+					$ledgerRecordPenalty .= " , mode_of_payment = 'CASH' ";
+					$ledgerRecord .= " , status = 1 ";
+					$this->db->query("INSERT INTO ledger set ".$ledgerRecordPenalty);
 				}
-				
-			}else{
-				$success=false;
 			}
 		}
 
-		if($success){
+		if($save2){
 			return 1;
 		}
 	}
@@ -365,8 +363,6 @@ Class Action {
 		$save = $this->db->query("INSERT INTO ledger set ".$data);
 		if($save){
 			return 1;
-		}else{
-			return $save;
 		}
 	}
 
@@ -376,8 +372,6 @@ Class Action {
 		if($delete)
 			return 1;
 	}
-
-
 
 //Contributions
 	function save_contribution(){
@@ -418,6 +412,7 @@ Class Action {
 				$ledgerRecord .= " , currency = 'USD' "; 
 				$ledgerRecord .= " , payment_narration = 'CONTRIBUTION'";
 				$ledgerRecord .= " , mode_of_payment = 'CASH' ";
+				$ledgerRecord .= " , status = 1 ";
 
 				if($save){
 					if($this->updateLedger($ledgerRecord)){
@@ -472,6 +467,13 @@ Class Action {
 			return 1;
 	}
 
+	function delete_user(){
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM users where id = ".$id);
+		if($delete)
+			return 1;
+	}
+
 	//Withdrawals
 	function make_withdrawal(){
 		$inputter = $_SESSION['login_name'];
@@ -480,20 +482,18 @@ Class Action {
 		$ledgerRecord = " trans_reference = 'CWP".mt_rand(1,999999)."'";
 		$ledgerRecord .= " , paychain_id = '$project_id' ";
 		$ledgerRecord .= " , amount = ($amount * -1) ";
+		$ledgerRecord .= " , payee = $customer_id ";
 		$ledgerRecord .= " , inputter = '$inputter' "; 
-		$ledgerRecord .= " , payee = '$customer_id' ";
 		$ledgerRecord .= " , currency = 'USD' "; 
 		$ledgerRecord .= " , payment_narration = 'WITHDRAWAL'";
 		$ledgerRecord .= " , mode_of_payment = 'CASH' ";
+		$ledgerRecord .= " , status = 1 ";
 
-		return $ledgerRecord;
-		
-		$response = $this->updateLedger($ledgerRecord);
-
-		if($response){
+		$save = $this->db->query("INSERT INTO ledger set ".$ledgerRecord);
+		if($save){
 			return 1;
 		}else{
-			return $response;
+			return $ledgerRecord;
 		}
 	}
 }

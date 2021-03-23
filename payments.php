@@ -28,15 +28,15 @@
 						<?php
 							
 							$i=1;
-							$qry = $conn->query("SELECT l.*,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address from ledger l inner join members b on b.id = l.payee order by id asc");
+							$qry = $conn->query("SELECT l.*,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address from ledger l inner join members b on b.id = l.payee where l.status != 2 order by id asc");
 
 							while($row = $qry->fetch_assoc()):
 
-						 ?>
-						 <tr>
+						?>
+						<tr>
 						 	
-						 	<td class="text-center"><?php echo $i++ ?></td>
-						 	<td>
+							<td class="text-center"><?php echo $i++ ?></td>
+		 	<td>
 						 		<p><small><b><?php echo $row['name'] ?></b></small></p>
 						 	</td>
 							 <td>

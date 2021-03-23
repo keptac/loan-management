@@ -29,11 +29,13 @@ if($action == 'save_user'){
 	if($save)
 		echo $save;
 }
+
 if($action == 'delete_user'){
 	$save = $crud->delete_user();
 	if($save)
 		echo $save;
 }
+
 if($action == 'signup'){
 	$save = $crud->signup();
 	if($save)
@@ -121,4 +123,12 @@ if($action == "delete_project"){
 	if($save)
 		echo $save;
 }
+
+// Withdrawal
+if($action == "make_withdrawal"){
+	$save = $crud->make_withdrawal();
+	if($save)
+		echo $save;
+}
+
 

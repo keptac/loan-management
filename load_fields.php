@@ -1,13 +1,14 @@
 <?php include 'db_connect.php' ?>
 <?php 
 	extract($_POST);
-	if(isset($id)){
+	if(isset($id) and $id>0){
 		$qry = $conn->query("SELECT * FROM loan_repayments where id=".$id);
 		foreach($qry->fetch_array() as $k => $val){
 			$$k = $val;
 		}
 	}
-	$loan = $conn->query("SELECT l.*,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address from loan_list l inner join members b on b.id = l.borrower_id where l.id = ".$loan_id);
+
+	$loan = $conn->query("SELECT l.*,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address, b.id from loan_list l inner join members b on b.id = l.borrower_id where l.id = ".$loan_id);
 	foreach($loan->fetch_array() as $k => $v){
 		$meta[$k] = $v;
 	}
@@ -35,7 +36,7 @@
 			<input name="payee" class="form-control" required="" value="<?php echo isset($payee) ? $payee : (isset($meta['name']) ? $meta['name'] : '') ?>">
 		</div>
 	</div>
-	
+	<input type="hidden" name="payee_id" class="form-control" required="" value="<?php echo isset($payee_id) ? $payee_id : (isset($meta['id']) ? $meta['id'] : '') ?>">
 </div>
 <hr>
 <div class="row">

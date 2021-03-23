@@ -1,10 +1,10 @@
 <?php 
 include('db_connect.php');
 if(isset($_GET['id'])){
-$qry = $conn->query("SELECT * FROM ledger where id = ".$_GET['id']);
-foreach($qry->fetch_array() as $k => $v){
-	$$k = $v;
-}
+	$qry = $conn->query("SELECT * FROM ledger where id = ".$_GET['id']);
+	foreach($qry->fetch_array() as $k => $v){
+		$$k = $v;
+	}
 }
 ?>
 <div class="container-fluid">
@@ -40,7 +40,7 @@ foreach($qry->fetch_array() as $k => $v){
 		<br/>
 
 		<div id="balance_fields">
-				
+
 		</div>
 
 		<!-- <hr/>
@@ -97,7 +97,7 @@ foreach($qry->fetch_array() as $k => $v){
 			method:"POST",
 			data:$(this).serialize(),
 			success:function(resp){
-				if(resp ==1 ){
+				if(resp == 1 ){
 					$('.modal').modal('hide')
 					alert_toast("Withdrawal Successful","success")
 					setTimeout(function(){

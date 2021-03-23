@@ -3,7 +3,7 @@
 	extract($_POST);
 	if(isset($project_id) and isset($customer_id)){
 		$balances = $conn->query("SELECT sum(amount) FROM contribution_list where project_id = ".$project_id." AND contributor_id = ".$customer_id);
-        $withdrawals = $conn->query("SELECT sum(amount) FROM ledger where payment_narration = 'LOAN DISBURMENT' AND payee = ".$customer_id);
+        $withdrawals = $conn->query("SELECT sum(amount) FROM ledger where `payment_narration` = 'WITHDRAWAL' AND `payee` = ".$customer_id." AND `status` = 1");
 
         while($b = $balances->fetch_assoc()){
             $sum_deposited = $b['sum(amount)'];
@@ -18,11 +18,9 @@
 
 ?>
 <div class="col-lg-12">
-
-
     <div class="row">
         <div class="form-group col-md-6">
-            <label class="control-label">Withdrawal Account Balance</label>
+            <label class="control-label">Project Account Balance</label>
             <input disabled type="number" name="balance" class="form-control text-right" value="<?php echo isset($total_sum) ? $total_sum : '' ?>">
         </div>
     </div>

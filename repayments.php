@@ -94,6 +94,7 @@
 	$('.delete_payment').click(function(){
 		_conf("Are you sure to delete this data?","delete_payment",[$(this).attr('data-id')])
 	})
+
 function delete_payment($id){
 		start_load()
 		$.ajax({
