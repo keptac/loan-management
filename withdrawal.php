@@ -54,26 +54,29 @@
 						 		<p><small><b><?php echo $row['inputter'] ?></b></small></p>
 						 	</td>
 
-							 <td>
-						 		<p><small><b><?php if($row['status']==1)echo "SUCCESSFUL"?></b></small></p>
-								 <p><small><b><?php if($row['status']==2)echo "DECLINED"?></b></small></p>
+							<td>
+								<p><small><b><?php if($row['status']==1)echo "SUCCESSFUL"?></b></small></p>
+								<p><small><b><?php if($row['status']==2)echo "DECLINED"?></b></small></p>
 
-								 <?php if($row['status']==0):?>
+								<?php if($row['status']==0):?>
 									<p><small>
 
 
-									<!-- Only admins -->
-									<select name="withdrawal_approve" id="" class="custom-select browser-default">
-										<option value="" <?php echo $status == "" ? "selected" : '' ?>></option>
-										<option value=<?php echo "1,".$row["trans_reference"] ?> <?php echo $status == 1 ? "selected" : '' ?>>Approve</option>
-										<option value=value=<?php echo "2,".$row["trans_reference"] ?>  <?php echo $status == 2 ? "selected" : '' ?>>Decline</option>
-									</select>
+									<?php if($_SESSION['login_type'] == 1): ?>
+										<!-- Only admins -->
+										<select name="withdrawal_approve" id="" class="custom-select browser-default">
+											<option value="" <?php echo $status == "" ? "selected" : '' ?>></option>
+											<option value=<?php echo "1,".$row["trans_reference"] ?> <?php echo $status == 1 ? "selected" : '' ?>>Approve</option>
+											<option value=<?php echo "2,".$row["trans_reference"] ?> <?php echo $status == 2 ? "selected" : '' ?>>Decline</option>
+										</select>
+									<?php endif?>
+
 									</small></p>
 								<?php endif ?>
-						 	</td>
+							</td>
 							<td>
-						 		<p><small><b><?php echo date("M d, Y",strtotime($row['date_released'])) ?></small></b></p>
-						 	</td>
+								<p><small><b><?php echo date("M d, Y",strtotime($row['date_released'])) ?></small></b></p>
+							</td>
 
 
 						 </tr>
@@ -105,14 +108,20 @@
 
 	function update_status(){
 		start_load()
-		
+	
 		$.ajax({
-			url:'ajax.php?action=update_withdrawal',
+			url:'ajax.php?action=authorize_withdrawal',
 			method:"POST",
 			data:{withdrawal_approve:$('[name="withdrawal_approve"]').val(), },
 			success:function(resp){
-				if(resp){
-					end_load()
+				if(resp==1){
+					alert_toast("Withdrawal Approved",'success')
+					setTimeout(function(){
+						location.reload()
+					},1500)
+				
+				}else{
+					alert_toast(resp,'success')
 				}
 			}
 		})

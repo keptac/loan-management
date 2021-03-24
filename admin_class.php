@@ -503,16 +503,16 @@ Class Action {
 		$inputter = $_SESSION['login_name'];
 		extract($_POST);
 
-		$dataArr = str_split("\,", $withdrawal_approve); 
+		$dataArr = explode(",", $withdrawal_approve); 
 
-		$data .= " , status =  $dataArr[0]";
+		$data = " status = ".$dataArr[0];
 		$data .= " , inputter = '$inputter' "; 
 
-		$save = $this->db->query("UPDATE `ledger` SET ".$data." WHERE trans_reference = ".$dataArr[1]);
+		$save = $this->db->query("UPDATE `ledger` SET $data WHERE `trans_reference` = '$dataArr[1]'");
 		if($save){
 			return 1;
 		}else{
-			return $data;
+			return "UPDATE `ledger` SET $data WHERE `trans_reference` = '$dataArr[1]'";
 		}
 	}
 }
