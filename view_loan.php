@@ -79,10 +79,6 @@ foreach($qry->fetch_array() as $k => $v){
 		</div>
 </div>
 
-
-
-
-
 		<div class="row">
 			<div class="col-md-6">
 				<label class="control-label">Borrower</label>
@@ -151,7 +147,7 @@ foreach($qry->fetch_array() as $k => $v){
 		<div id="row-field">
 			<div class="row ">
 				<div class="col-md-12 text-center">
-					<button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">View Ammortization Schedule</button>
+					<button class="btn btn-primary btn-sm ammortization" type="button" data-id="<?php echo $_GET['id'] ?>">View Ammortization Schedule</button>
 					<button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
@@ -164,64 +160,11 @@ foreach($qry->fetch_array() as $k => $v){
 	
 	$('.hide-values').hide();
 
-	$('.select2').select2({
-		placeholder:"Please select here",
-		width:"100%"
-	})
-	$('#calculate').click(function(){
-		calculate()
+	$('.ammortization').click(function(){
+		uni_modal("Ammortization","ammortization.php?id="+$(this).attr('data-id'),'mid-large')
 	})
 	
 
-	function calculate(){
-		start_load()
-		if($('#loan_plan_id').val() == '' && $('[name="amount"]').val() == ''){
-			alert_toast("Select plan and enter amount first.","warning");
-			return false;
-		}
-		var plan = $("#plan_id option[value='"+$("#plan_id").val()+"']")
-		$.ajax({
-			url:"calculation_table.php",
-			method:"POST",
-			data:{amount:$('[name="amount"]').val(),months:plan.attr('data-months'),interest:plan.attr('data-interest_percentage'),penalty:plan.attr('data-penalty_rate')},
-			success:function(resp){
-				if(resp){
-					
-					$('#calculation_table').html(resp)
-					end_load()
-				}
-			}
-
-		})
-	}
-	$('#loan-application').submit(function(e){
-		e.preventDefault()
-		start_load()
-		$.ajax({
-			url:'ajax.php?action=save_loan',
-			method:"POST",
-			data:$(this).serialize(),
-			success:function(resp){
-				if(resp ==1 ){
-					$('.modal').modal('hide')
-					alert_toast("Loan Data successfully saved.","success")
-					setTimeout(function(){
-						location.reload();
-					},1500)
-				}else{
-					$('.modal').modal('hide')
-					alert_toast(resp,"success")
-					setTimeout(function(){
-						location.reload();
-					},5500)
-				}
-			}
-		})
-	})
-	$(document).ready(function(){
-		if('<?php echo isset($_GET['id']) ?>' == 1)
-			calculate()
-	})
 </script>
 <style>
 	#uni_modal .modal-footer{

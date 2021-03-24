@@ -48,6 +48,7 @@
 								<tr>
 									<th class="text-center">#</th>
 									<th class="text-center">Loan Type</th>
+									<th class="text-center">Description</th>
 									<th class="text-center">Action</th>
 								</tr>
 							</thead>
@@ -61,8 +62,11 @@
 									<td class="text-center"><?php echo $i++ ?></td>
 									
 									<td class="">
-										 <p>Type Name: <b><?php echo $row['type_name'] ?></b></p>
-										 <p><small>Description: <b><?php echo $row['description'] ?></b></small></p>
+										<p><small><?php echo $row['type_name'] ?></small></p>
+										
+									</td>
+									<td class="">
+										<p><small><?php echo $row['description'] ?></small></p>
 									</td>
 									<td class="text-center">
 										<button class="btn btn-sm btn-primary edit_ltype" type="button" data-id="<?php echo $row['id'] ?>" data-type_name="<?php echo $row['type_name'] ?>" data-description="<?php echo $row['description'] ?>" >Edit</button>

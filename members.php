@@ -33,22 +33,22 @@
 						 	
 						 	<td class="text-center"><?php echo $i++ ?></td>
 						 	<td>
-						 		<p><small><b><?php echo ucwords($row['lastname'].", ".$row['firstname'].' '.$row['middlename']) ?></b></small></p>
+						 		<p><small><?php echo ucwords($row['lastname'].", ".$row['firstname'].' '.$row['middlename']) ?></small></p>
 						 	</td>
 							 <td>
-						 		<p><small><b><?php echo $row['tax_id'] ?></small></b></p>
+						 		<p><small><?php echo $row['tax_id'] ?></small></p>
 						 		
 						 	</td>
 							 <td>
-						 		<p><small><b><?php echo $row['address'] ?></small></b></p>
+						 		<p><small><?php echo $row['address'] ?></small></p>
 						 		
 						 	</td>
 							 <td>
-						 		<p><small><b><?php echo $row['contact_no'] ?></small></b></p>
+						 		<p><small><?php echo $row['contact_no'] ?></small></p>
 						 	</td>
 
 							 <td>
-						 		<p><small><b><?php echo $row['email'] ?></small></b></p>
+						 		<p><small><?php echo $row['email'] ?></small></p>
 						 	</td>
 						 	<td class="text-center">
 						 			<button class="btn btn-outline-primary btn-sm edit_member" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-edit"></i></button>
