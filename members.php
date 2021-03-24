@@ -11,19 +11,14 @@
 			</div>
 			<div class="card-body">
 				<table class="table table-bordered" id="member-list">
-					<colgroup>
-						<col width="10%">
-						<col width="35%">
-						<col width="30%">
-						<col width="15%">
-						<col width="10%">
-					</colgroup>
 					<thead>
 						<tr>
 							<th class="text-center">#</th>
 							<th class="text-center">Member</th>
-							<th class="text-center">Current Loan</th>
-							<th class="text-center">Next Payment Schedule</th>
+							<th class="text-center">ID Number</th>
+							<th class="text-center">Address</th>
+							<th class="text-center">Contact #</th>
+							<th class="text-center">Email</th>
 							<th class="text-center">Action</th>
 						</tr>
 					</thead>
@@ -38,18 +33,26 @@
 						 	
 						 	<td class="text-center"><?php echo $i++ ?></td>
 						 	<td>
-						 		<p>Name :<b><?php echo ucwords($row['lastname'].", ".$row['firstname'].' '.$row['middlename']) ?></b></p>
-						 		<p><small>Address :<b><?php echo $row['address'] ?></small></b></p>
-						 		<p><small>Contact # :<b><?php echo $row['contact_no'] ?></small></b></p>
-						 		<p><small>Email :<b><?php echo $row['email'] ?></small></b></p>
-						 		<p><small>Tax ID :<b><?php echo $row['tax_id'] ?></small></b></p>
+						 		<p><small><b><?php echo ucwords($row['lastname'].", ".$row['firstname'].' '.$row['middlename']) ?></b></small></p>
+						 	</td>
+							 <td>
+						 		<p><small><b><?php echo $row['tax_id'] ?></small></b></p>
 						 		
 						 	</td>
-						 	<td class="">None</td>
-						 	<td class="">N/A</td>
+							 <td>
+						 		<p><small><b><?php echo $row['address'] ?></small></b></p>
+						 		
+						 	</td>
+							 <td>
+						 		<p><small><b><?php echo $row['contact_no'] ?></small></b></p>
+						 	</td>
+
+							 <td>
+						 		<p><small><b><?php echo $row['email'] ?></small></b></p>
+						 	</td>
 						 	<td class="text-center">
 						 			<button class="btn btn-outline-primary btn-sm edit_member" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-edit"></i></button>
-						 			<button class="btn btn-outline-danger btn-sm delete_member" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></button>
+						 			<!-- <button class="btn btn-outline-danger btn-sm delete_member" type="button" data-id="<?php //echo $row['id'] ?>"><i class="fa fa-trash"></i></button> -->
 						 	</td>
 
 						 </tr>
@@ -79,7 +82,7 @@
 		uni_modal("New Member","manage_member.php",'mid-large')
 	})
 	$('.edit_member').click(function(){
-		uni_modal("Edit Member","manage_member.php?id="+$(this).attr('data-id'),'mid-large')
+		uni_modal("Edit Member","edit_member.php?id="+$(this).attr('data-id'),'mid-large')
 	})
 	$('.delete_member').click(function(){
 		_conf("Are you sure to delete this Member?","delete_member",[$(this).attr('data-id')])
