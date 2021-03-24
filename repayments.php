@@ -12,14 +12,7 @@
 			</div>
 			<div class="card-body">
 				<table class="table table-bordered" id="loan-list">
-					<colgroup>
-						<col width="10%">
-						<col width="25%">
-						<col width="25%">
-						<col width="20%">
-						<col width="10%">
-						<col width="10%">
-					</colgroup>
+
 					<thead>
 						<tr>
 							<th class="text-center">#</th>
@@ -27,7 +20,7 @@
 							<th class="text-center">Payee</th>
 							<th class="text-center">Amount</th>
 							<th class="text-center">Penalty</th>
-							<th class="text-center">Action</th>
+							<th class="text-center">Date Paid</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -57,10 +50,10 @@
 						 	<td class="text-center">
 						 		<?php echo number_format($row['penalty_amount'],2) ?>
 						 	</td>
-						 	<td class="text-center">
-						 			<button class="btn btn-outline-primary btn-sm edit_payment" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-edit"></i></button>
-						 			<button class="btn btn-outline-danger btn-sm delete_payment" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></button>
+						 	<td>
+								<p><?php echo date("M d, Y",strtotime($row['date_created'])) ?></p>
 						 	</td>
+							
 
 						 </tr>
 

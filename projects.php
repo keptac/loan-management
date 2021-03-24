@@ -60,6 +60,9 @@
 								<tr>
 									<th class="text-center">#</th>
 									<th class="text-center">Project Name</th>
+									<th class="text-center">Description</th>
+									<th class="text-center">Start Date</th>
+									<th class="text-center">End Date</th>
 									<th class="text-center">Action</th>
 								</tr>
 							</thead>
@@ -71,13 +74,19 @@
 								?>
 								<tr>
 									<td class="text-center"><?php echo $i++ ?></td>
-									
 									<td class="">
-										 <p>Project Name: <b><?php echo $row['project_name'] ?></b></p>
-										 <p><small>Description: <b><?php echo $row['description'] ?></b></small></p>
-										 <p><small>Start Date: <b><?php echo $row['start_date'] ?></b></small></p>
-										 <p><small>End Date: <b><?php echo $row['end_date'] ?></b></small></p>
+										<p><small><?php echo $row['project_name'] ?></small></p>
 									</td>
+									<td class="">
+										<p><small> <?php echo $row['description'] ?></small></p>
+									</td>
+									<td class="">
+										<p><small><?php echo date("M d, Y",strtotime($row['start_date'])) ?></small></p>
+									</td>
+									<td class="">
+										<p><small><?php echo date("M d, Y",strtotime($row['end_date'])) ?></small></p>
+									</td>
+
 									<td class="text-center">
 										<button class="btn btn-sm btn-primary edit_prjct" type="button" data-id="<?php echo $row['id'] ?>" data-project_name="<?php echo $row['project_name'] ?>" data-description="<?php echo $row['description'] ?>" data-end_date="<?php echo $row['end_date'] ?>">Edit</button>
 										<button class="btn btn-sm btn-danger delete_prjct" type="button" data-id="<?php echo $row['id'] ?>">Delete</button>
@@ -104,7 +113,7 @@
 	}
 	img{
 		max-width:100px;
-		max-height: :150px;
+		max-height: 150px;
 	}
 </style>
 <script>
