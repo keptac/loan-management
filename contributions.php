@@ -37,23 +37,23 @@
 						 	
 						 	<td class="text-center"><?php echo $i++ ?></td>
 						 	<td>
-						 		<p><small><b><?php echo $row['name'] ?></b></small></p>
+						 		<p><small><?php echo $row['name'] ?></small></p>
 						 	</td>
 							 <td>
-						 		<p><small><b><?php echo $row['contact_no'] ?></b></small></p>
+						 		<p><small><?php echo $row['contact_no'] ?></small></p>
 						 	</td>
 						 	<td>
-							 <p> <small><b><?php echo $row["project_name"] ?></b></small> </p>
+							 <p> <small><?php echo $row["project_name"] ?></small> </p>
 						 	</td>
 							 
 							 <td>
-						 		<p><small><b><?php echo $row['ref_no'] ?></small></b></p>
+						 		<p><small><?php echo $row['ref_no'] ?></small></p>
 						 	</td>
 							 <td>
-						 		<p><small><b><?php echo number_format($row['amount'],2) ?></b></small></p>
+						 		<p><small><?php echo $row['currency_code']." ".number_format($row['amount'],2) ?></small></p>
 						 	</td>
 <td>
-						 		<p><small><b><?php echo date("M d, Y",strtotime($row['date_released'])) ?></small></b></p>
+						 		<p><small><?php echo date("M d, Y",strtotime($row['date_created'])) ?></small></p>
 						 	
 						 	</td>
 						 	<td class="text-center">

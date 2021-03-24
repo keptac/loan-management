@@ -70,7 +70,7 @@
 								<p><small> <?php echo $row['duration']." months" ?></small></p>
 							</td>
 							<td>
-								<p><small> <?php echo number_format($row['amount'],2) ?></small></p>
+								<p><small> <?php echo $row['currency']." ".number_format($row['amount'],2) ?></small></p>
 							</td>
 							<td>
 								<p> <small><?php echo $row['ref_no'] ?></small></p>
@@ -84,7 +84,7 @@
 							</td>
 							<td>
 								<?php if($row['status'] == 2 ): ?>
-								<p><small><?php echo number_format($monthly,2) ?></small></p>
+								<p><small><?php echo $row['currency']." ".number_format($monthly,2) ?></small></p>
 								<?php else: ?>
 									N/a
 								<?php endif; ?>
@@ -114,8 +114,11 @@
 							<td class="text-center">
 							<?php if($_SESSION['login_type'] == 1): ?>
 							
-								<?php if($row['status'] == 0): ?>
+								<?php if($row['status'] == 0 ): ?>
 									<button class="btn btn-outline-primary btn-sm edit_loan" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-edit"></i></button>
+								<?php elseif($row['status'] == 1  ): ?>
+									<button class="btn btn-outline-primary btn-sm edit_loan" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-edit"></i></button>
+									<button class="btn btn-outline-primary btn-sm view_loan" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-eye"></i></button>
 								<?php elseif($row['status'] == 4): ?>
 									<button class="btn btn-outline-danger btn-sm delete_loan" type="button" data-id="<?php echo $row['id'] ?>"><i class="fa fa-trash"></i></button>
 								<?php else: ?>

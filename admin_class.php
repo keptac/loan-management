@@ -206,6 +206,7 @@ Class Action {
 		$data .= " , plan_id = $plan_id ";
 		$data .= " , amount = $amount ";
 		$data .= " , purpose = '$purpose' ";
+		$data .= " , currency = '$currency' "; 
 
 		$loans = $this->db->query("SELECT * FROM loan_plan where id = $plan_id ");
 
@@ -283,7 +284,7 @@ Class Action {
 						$ledgerRecord .= " , amount = ($amount * -1) ";
 						$ledgerRecord .= " , inputter = '$inputter' "; 
 						$ledgerRecord .= " , payee = '$borrower_id' ";
-						$ledgerRecord .= " , currency = 'USD' "; 
+						$ledgerRecord .= " , currency = '$currency' "; 
 						$ledgerRecord .= " , payment_narration = 'LOAN DISBURMENT'";
 						$ledgerRecord .= " , mode_of_payment = 'CASH' ";
 						$ledgerRecord .= " , status = 1 ";
@@ -323,14 +324,14 @@ Class Action {
 		$data .= " , penalty_amount = $penalty_amount ";
 		$data .= " , overdue = '$overdue' ";
 		$data .= " , inputter = '$inputter' ";
-		$data .= " , currency_code = 'USD' ";
+		$data .= " , currency_code = '$currency' ";
 
 		$ledgerRecord = " trans_reference = 'LMS".mt_rand(1,999999)."'";
 		$ledgerRecord .= " , paychain_id = '$loan_id' ";
 		$ledgerRecord .= " , amount = $amount ";
 		$ledgerRecord .= " , inputter = '$inputter' "; //Revisit this break point
 		$ledgerRecord .= " , payee = '$payee_id' ";
-		$ledgerRecord .= " , currency = 'USD' "; 
+		$ledgerRecord .= " , currency = '$currency' "; 
 		$ledgerRecord .= " , payment_narration = 'LOAN REPAYMENT'"; //LOAN REPAYMENT, LOAN PENALTY, CONTRIBUTION, WITHDRAWAl
 		$ledgerRecord .= " , mode_of_payment = 'CASH' ";
 		$ledgerRecord .= " , status = 1 ";
@@ -347,7 +348,7 @@ Class Action {
 					$ledgerRecordPenalty .= " , amount = $penalty_amount ";
 					$ledgerRecordPenalty .= " , inputter = '$inputter' "; 
 					$ledgerRecordPenalty .= " , payee = $payee_id ";
-					$ledgerRecordPenalty .= " , currency = 'USD' "; 
+					$ledgerRecordPenalty .= " , currency = '$currency' "; 
 					$ledgerRecordPenalty .= " , payment_narration = 'LOAN PENALTY'";
 					$ledgerRecordPenalty .= " , mode_of_payment = 'CASH' ";
 					$ledgerRecord .= " , status = 1 ";
@@ -387,7 +388,7 @@ Class Action {
 			$data .= " , amount = $amount ";
 			$data .= " , narration = '$narration' ";
 			$data .= " , inputter = '$inputter' ";
-			$data .= " , currency_code = 'USD' ";
+			$data .= " , currency_code = '$currency' ";
 
 			if(empty($id)){
 				$ref_no = "C".mt_rand(1,999999);
@@ -411,7 +412,7 @@ Class Action {
 				$ledgerRecord .= " , amount = $amount ";
 				$ledgerRecord .= " , inputter = '$inputter' "; 
 				$ledgerRecord .= " , payee = '$contributor_id' ";
-				$ledgerRecord .= " , currency = 'USD' "; 
+				$ledgerRecord .= " , currency = '$currency' "; 
 				$ledgerRecord .= " , payment_narration = 'CONTRIBUTION'";
 				$ledgerRecord .= " , mode_of_payment = 'CASH' ";
 				$ledgerRecord .= " , status = 1 ";
@@ -486,10 +487,11 @@ Class Action {
 		$ledgerRecord .= " , amount = ($amount * -1) ";
 		$ledgerRecord .= " , payee = $customer_id ";
 		$ledgerRecord .= " , inputter = '$inputter' "; 
-		$ledgerRecord .= " , currency = 'USD' "; 
+		$ledgerRecord .= " , currency = '$currency' "; 
 		$ledgerRecord .= " , payment_narration = 'WITHDRAWAL'";
 		$ledgerRecord .= " , mode_of_payment = 'CASH' ";
 		$ledgerRecord .= " , status = 0 ";
+		$ledgerRecord .= " , pid = $pid ";
 
 		$save = $this->db->query("INSERT INTO ledger set ".$ledgerRecord);
 		if($save){

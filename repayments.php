@@ -20,6 +20,7 @@
 							<th class="text-center">Payee</th>
 							<th class="text-center">Amount</th>
 							<th class="text-center">Penalty</th>
+							<th class="text-center">Inputter</th>
 							<th class="text-center">Date Paid</th>
 						</tr>
 					</thead>
@@ -37,21 +38,24 @@
 						 	
 						 	<td class="text-center"><?php echo $i++ ?></td>
 						 	<td>
-						 		<?php echo $row['ref_no'] ?>
+						 		<small><?php echo $row['ref_no'] ?></small>
 						 	</td>
 						 	<td>
-						 		<?php echo $row['payee'] ?>
-						 		
+						 		<small><?php echo $row['payee'] ?></small>
+						 	
 						 	</td>
 						 	<td>
-						 		<?php echo number_format($row['amount'],2) ?>
+						 		<small><?php echo $row['currency_code']." ".number_format($row['amount'],2) ?></small>
 						 		
 						 	</td>
 						 	<td class="text-center">
-						 		<?php echo number_format($row['penalty_amount'],2) ?>
+						 		<small><?php echo number_format($row['penalty_amount'],2) ?></small>
+						 	</td>
+							 <td>
+								<small><p><?php echo $row['inputter'] ?></p></small>
 						 	</td>
 						 	<td>
-								<p><?php echo date("M d, Y",strtotime($row['date_created'])) ?></p>
+								<small><p><?php echo date("M d, Y",strtotime($row['date_created'])) ?></p></small>
 						 	</td>
 							
 

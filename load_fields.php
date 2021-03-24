@@ -9,6 +9,7 @@
 	}
 
 	$loan = $conn->query("SELECT l.*,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address, b.id from loan_list l inner join members b on b.id = l.borrower_id where l.id = ".$loan_id);
+	
 	foreach($loan->fetch_array() as $k => $v){
 		$meta[$k] = $v;
 	}
@@ -41,10 +42,21 @@
 <hr>
 <div class="row">
 	<div class="col-md-5">
-		<p><small>Monthly amount:<b><?php echo number_format($monthly,2) ?></b></small></p>
-		<p><small>Penalty :<b><?php echo $add = (date('Ymd',strtotime($next)) < date("Ymd") ) ?  $penalty : 0; ?></b></small></p>
-		<p><small>Payable Amount :<b><?php echo number_format($monthly + $add,2) ?></b></small></p>
+		<p><small>Monthly amount: <b><?php echo $meta['currency']." ".number_format($monthly,2) ?></b></small></p>
+		<p><small>Penalty : <b><?php echo $add = (date('Ymd',strtotime($next)) < date("Ymd") ) ?  $meta['currency']." ".$penalty : $meta['currency']."0"; ?></b></small></p>
+		<p><small>Payable Amount : <b><?php echo  $meta['currency']." ".number_format($monthly + $add,2) ?></b></small></p>
 	</div>
+	<div class="form-group col-md-2">
+			<label class="control-label">Currency</label>
+			<select name="currency" id="currency" class="custom-select browser-default">
+					<option value=""></option>
+					<option value="NGN">NGN (₦)</option>
+					<option value="USD">USD ($)</option>
+					<option value="ZAR">ZAR (R)</option>
+					<option value="BWP">BWP (P)</option>
+					<option value="GBP">GBP (£)</option>
+			</select>
+		</div>
 	<div class="col-md-5">
 		<div class="form-group">
 			<label for="">Amount</label>

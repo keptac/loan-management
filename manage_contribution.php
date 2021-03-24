@@ -17,7 +17,7 @@ foreach($qry->fetch_array() as $k => $v){
 				<?php
 				$contributor = $conn->query("SELECT *,concat(lastname,', ',firstname,' ',middlename) as name FROM members order by concat(lastname,', ',firstname,' ',middlename) asc ");
 				?>
-				<select name="contributor_id" id="contributor_id" class="custom-select browser-default select2">
+				<select name="contributor_id" id="contributor_id" class="custom-select browser-default">
 					<option value=""></option>
 						<?php while($row = $contributor->fetch_assoc()): ?>
 							<option value="<?php echo $row['id'] ?>" <?php echo isset($contributor_id) && $contributor_id == $row['id'] ? "selected" : '' ?>><?php echo $row['name'] . ' | Tax ID:'.$row['tax_id'] ?></option>
@@ -29,18 +29,28 @@ foreach($qry->fetch_array() as $k => $v){
 				<?php
 				$type = $conn->query("SELECT * FROM projects where `status` = 1 order by `project_name` desc "); //only active projects to appear
 				?>
-				<select name="project_id" id="project_id" class="custom-select browser-default select2">
+				<select name="project_id" id="project_id" class="custom-select browser-default">
 					<option value=""></option>
 						<?php while($row = $type->fetch_assoc()): ?>
 							<option value="<?php echo $row['id'] ?>" <?php echo isset($project_id) && $project_id == $row['id'] ? "selected" : '' ?>><?php echo $row['project_name'] ?></option>
 						<?php endwhile; ?>
 				</select>
 			</div>
-		
+	
 		</div>
-
+		
 		<div class="row">
-
+		<div class="form-group col-md-2">
+			<label class="control-label">Currency</label>
+			<select name="currency" id="currency" class="custom-select browser-default">
+					<option value=""></option>
+					<option value="NGN">NGN (₦)</option>
+					<option value="USD">USD ($)</option>
+					<option value="ZAR">ZAR (R)</option>
+					<option value="BWP">BWP (P)</option>
+					<option value="GBP">GBP (£)</option>
+			</select>
+		</div>
 		<div class="form-group col-md-6">
 			<label class="control-label">Amount</label>
 			<input type="number" name="amount" class="form-control text-right" step="any" id="" value="<?php echo isset($amount) ? $amount : '' ?>">

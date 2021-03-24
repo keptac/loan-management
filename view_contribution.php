@@ -18,7 +18,7 @@ foreach($qry->fetch_array() as $k => $v){
 			</div>
 			<div class="row">
 				<div class="col-md-8">
-					<input type="text" name="amount" class="form-control text-left" step="any" id="" value="<?php echo isset($address) ? $address: '' ?>" disabled>
+				<input type="text" name="amount" class="form-control text-left" step="any" id="" value="<?php echo isset($address) ? $address: '' ?>" disabled>
 				</div>
 				<div class="col-md-3">
 					<input type="text" name="amount" class="form-control text-left" step="any" id="" value="<?php echo isset($contact_no) ? $contact_no: '' ?>" disabled>
@@ -36,7 +36,7 @@ foreach($qry->fetch_array() as $k => $v){
 		<br/>
 		<div class="row">
 			<div class="form-group col-md-8">
-				<input type="text" name="amount" class="form-control text-left" step="any" id="" value="<?php echo isset($amount) ? "Paid ".$currency." ".number_format($amount,2)." with payment reference ".$trans_reference : '' ?>" disabled>
+				<input type="text" name="amount" class="form-control text-left" step="any" id="" value="<?php echo isset($amount) ? "Paid ".$currency." ".number_format($amount,2)." - Payment reference: ".$trans_reference : '' ?>" disabled>
 			</div>
 		</div>
 		<div class="row">

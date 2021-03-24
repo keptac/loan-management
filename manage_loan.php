@@ -58,7 +58,21 @@ foreach($qry->fetch_array() as $k => $v){
 				</select>
 			
 			</div>
-		<div class="form-group col-md-6">
+		
+
+		<div class="form-group col-md-2">
+			<label class="control-label">Currency</label>
+			<select name="currency" id="currency" class="custom-select browser-default">
+					<option value=""></option>
+					<option value="NGN">NGN (₦)</option>
+					<option value="USD">USD ($)</option>
+					<option value="ZAR">ZAR (R)</option>
+					<option value="BWP">BWP (P)</option>
+					<option value="GBP">GBP (£)</option>
+			</select>
+		</div>
+
+		<div class="form-group col-md-4">
 			<label class="control-label">Loan Amount</label>
 			<input type="number" name="amount" class="form-control text-right" step="any" id="" value="<?php echo isset($amount) ? $amount : '' ?>">
 		</div>
