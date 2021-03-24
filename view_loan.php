@@ -129,7 +129,7 @@ foreach($qry->fetch_array() as $k => $v){
 			</div>
 		<div class="form-group col-md-6">
 			<label class="control-label">Loan Amount</label>
-			<input type="number" name="amount" class="form-control text-right" step="any" id="" value="<?php echo isset($amount) ? $amount : '' ?>">
+			<input disabled type="number" name="amount" class="form-control text-right" step="any" id="" value="<?php echo isset($amount) ? $amount : '' ?>">
 		</div>
 		</div>
 		<div class="row">
@@ -137,52 +137,21 @@ foreach($qry->fetch_array() as $k => $v){
 			<label class="control-label">Purpose</label>
 			<textarea disabled name="purpose" id="" cols="30" rows="2" class="form-control"><?php echo isset($purpose) ? $purpose : '' ?></textarea>
 		</div>
-		
+<!-- 		
 		<div class="form-group col-md-2 offset-md-2 .justify-content-center">
 			<label class="control-label">&nbsp;</label>
 			<button class="btn btn-primary btn-sm btn-block align-self-end" type="button" id="calculate">Calculate</button>
-		</div>
+		</div> -->
 		</div>
 
 		<div id="calculation_table">
-			
+
 		</div>
 
-		<?php if(isset($status)): ?>
-		<div class="row">
-			<div class="form-group col-md-6">
-				<label class="control-label">&nbsp;</label>
-				<select class="custom-select browser-default" name="status">
-					<option value="0" <?php echo $status == 0 ? "selected" : '' ?>>For Approval</option>
-
-					<?php if($status =='2' ): ?>
-						<option value="3" <?php echo $status == 3 ? "selected" : '' ?>>Complete</option>
-					<?php endif ?>
-
-					<?php if($_SESSION['login_type'] == 1): ?>
-						<option value="1" <?php echo $status == 1 ? "selected" : '' ?>>Approved</option>
-					<?php endif ?>
-
-					<?php if($_SESSION['login_type'] == 1): ?>
-						<?php if($status !='4'): ?>
-							<option value="2" <?php echo $status == 2 ? "selected" : '' ?>>Released</option>
-						<?php endif ?>
-					<?php endif ?>
-
-					<?php if($_SESSION['login_type'] == 1): ?>
-						<?php if($status !='2'): ?>
-							<option value="4" <?php echo $status == 4 ? "selected" : '' ?>>Denied</option>
-						<?php endif ?>
-					<?php endif ?>
-				</select>
-			</div>
-		</div>
-		<hr>
-	<?php endif ?>
 		<div id="row-field">
 			<div class="row ">
 				<div class="col-md-12 text-center">
-					<button class="btn btn-primary btn-sm " >Save</button>
+					<button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">View Ammortization Schedule</button>
 					<button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
 				</div>
 			</div>
