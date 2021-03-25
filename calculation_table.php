@@ -1,7 +1,9 @@
 <?php 
 extract($_POST);
 
-$monthly = ($amount + ($amount * ($interest/100))) / $months;
+// $monthly = ($amount + ($amount * ($interest/100))) / $months;
+
+$monthly = $amount/((((1+(($interest*0.01)/12))**$months)-1)/((($interest*0.01)/12)*((1+(($interest*0.01)/12))**$months)));
 $penalty = $monthly * ($penalty/100);
 
 ?>

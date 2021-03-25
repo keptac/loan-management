@@ -162,12 +162,10 @@ foreach($qry->fetch_array() as $k => $v){
 			data:{amount:$('[name="amount"]').val(),months:plan.attr('data-months'),interest:plan.attr('data-interest_percentage'),penalty:plan.attr('data-penalty_rate')},
 			success:function(resp){
 				if(resp){
-					
 					$('#calculation_table').html(resp)
 					end_load()
 				}
 			}
-
 		})
 	}
 	$('#loan-application').submit(function(e){

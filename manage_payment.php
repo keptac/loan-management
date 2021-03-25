@@ -17,7 +17,7 @@ if(isset($_GET['id'])){
 				<div class="col-md-4">
 					<div class="form-group">
 						<label for="" class="control-label">Reference No.</label>
-						<select name="loan_id" id="" class="custom-select browser-default select2">
+						<select name="loan_id" id="" class="custom-select browser-default ">
 							<option value=""></option>
 							<?php
 							$loan = $conn->query("SELECT * from loan_list where status = 2 ");

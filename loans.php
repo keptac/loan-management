@@ -42,7 +42,8 @@
 							}
 							$qry = $conn->query("SELECT l.*,concat(b.lastname,', ',b.firstname,' ',b.middlename)as name, b.contact_no, b.address from loan_list l inner join members b on b.id = l.borrower_id  order by id asc");
 							while($row = $qry->fetch_assoc()):
-								$monthly = ($row['amount'] + ($row['amount'] * ($plan_arr[$row['plan_id']]['interest_percentage']/100))) / $plan_arr[$row['plan_id']]['months'];
+								// $monthly = ($row['amount'] + ($row['amount'] * ($plan_arr[$row['plan_id']]['interest_percentage']/100))) / $plan_arr[$row['plan_id']]['months'];
+								$monthly = $row['amount']/((((1+(($row['rate']*0.01)/12))**$row['duration'])-1)/((($row['rate']*0.01)/12)*((1+(($row['rate']*0.01)/12))**$row['duration'])));
 								$penalty = $monthly * ($plan_arr[$row['plan_id']]['penalty_rate']/100);
 								$payments = $conn->query("SELECT * from loan_repayments where loan_id =".$row['id']);
 								$paid = $payments->num_rows;

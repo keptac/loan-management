@@ -43,7 +43,7 @@
 <div class="row">
 	<div class="col-md-5">
 		<p><small>Monthly amount: <b><?php echo $meta['currency']." ".number_format($monthly,2) ?></b></small></p>
-		<p><small>Penalty : <b><?php echo $add = (date('Ymd',strtotime($next)) < date("Ymd") ) ?  $meta['currency']." ".$penalty : $meta['currency']."0"; ?></b></small></p>
+		<p><small>Penalty : <b><?php echo $add = (date('Ymd',strtotime($next)) < date("Ymd") ) ? $penalty : 0; ?></b></small></p>
 		<p><small>Payable Amount : <b><?php echo  $meta['currency']." ".number_format($monthly + $add,2) ?></b></small></p>
 	</div>
 	<div class="form-group col-md-2">

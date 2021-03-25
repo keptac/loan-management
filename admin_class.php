@@ -322,7 +322,7 @@ Class Action {
 		$data .= " , payee = '$payee' ";
 		$data .= " , amount = $amount ";
 		$data .= " , penalty_amount = $penalty_amount ";
-		$data .= " , overdue = '$overdue' ";
+		$data .= " , overdue = $overdue ";
 		$data .= " , inputter = '$inputter' ";
 		$data .= " , currency_code = '$currency' ";
 
@@ -357,8 +357,10 @@ Class Action {
 			}
 		}
 
-		if($save2){
+		if($save){
 			return 1;
+		}else{
+			return $data;
 		}
 	}
 

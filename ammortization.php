@@ -30,15 +30,16 @@ session_start();
                             
                             while($row = $qry->fetch_assoc()):
                                 if($i==1){
-                                    $monthlyPayable = ($row['amount'] + ($row['amount'] * $row['rate']/100))/$row['duration'];
-
+                                    // $monthlyPayable = ($row['amount'] + ($row['amount'] * $row['rate']/100))/$row['duration'];
+									$monthlyPayable = $row['amount']/((((1+(($row['rate']*0.01)/12))**$row['duration'])-1)/((($row['rate']*0.01)/12)*((1+(($row['rate']*0.01)/12))**$row['duration'])));
                                     $interest = ($row['amount'] * ($row['rate']/100) * ($row['duration']/12))/$row['duration'];
                                     $principle = $monthlyPayable - $interest;
                                     $closingBalance = $row['amount'] - $principle;
                                     $previousClosingBalance = $row['amount'];
                                 }else{
-                                    $monthlyPayable = ($row['amount'] + ($row['amount']*$row['rate']/100))/$row['duration'];
-                                    $interest = ($previousClosingBalance * ($row['rate']/100) * ($row['duration']/12))/$row['duration'];
+                                    // $monthlyPayable = ($row['amount'] + ($row['amount']*$row['rate']/100))/$row['duration'];
+									$monthlyPayable = $row['amount']/((((1+(($row['rate']*0.01)/12))**$row['duration'])-1)/((($row['rate']*0.01)/12)*((1+(($row['rate']*0.01)/12))**$row['duration'])));
+									$interest = ($previousClosingBalance * ($row['rate']/100) * ($row['duration']/12))/$row['duration'];
                                     $principle = $monthlyPayable - $interest;
                                     $closingBalance = $previousClosingBalance - $principle;
                                 }

@@ -14,16 +14,16 @@
   	<div class="col-lg-12">
   		<div class="col-md-1 float-left" style="display: flex;">
   			<div class="logo">
-  				<span class="fa fa-money-bill-wave"></span>
+  				<span class="fa fa-hand-holding-usd"></span>
   			</div>
   		</div>
-      <div class="col-md-4 float-left text-white">
+      <div class="col-md-4 float-left text-white" style="margin-top: 10px;">
         <large><b>Loan Management System</b></large>
       </div>
-	  	<div class="col-md-2 float-right text-white">
-	  		<a href="ajax.php?action=logout" class="text-white"><?php echo $_SESSION['login_name'] ?> <i class="fa fa-power-off"></i></a>
+	  	<div class="col-md-2 float-right text-white" style="margin-top: 10px;">
+	  		<a href="ajax.php?action=logout" class="text-white"><?php echo $_SESSION['login_name']."      " ?>   <i class="fa fa-power-off"></i></a>
 	    </div>
     </div>
   </div>
-  
+
 </nav>
